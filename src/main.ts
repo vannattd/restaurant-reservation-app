@@ -6,7 +6,7 @@ import "firebase/auth"
 
 Vue.config.productionTip = false
 
-var firebaseConfig = {
+const firebaseConfig = {
   apiKey: "AIzaSyCWO-YxXJHTi0PNphri-2hcJb4OzOR53yo",
   authDomain: "restaurant-reservation-a-ce7fa.firebaseapp.com",
   projectId: "restaurant-reservation-a-ce7fa",

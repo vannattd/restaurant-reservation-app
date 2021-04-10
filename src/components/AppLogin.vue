@@ -22,20 +22,18 @@
     >
       Sign In
     </button>
-    <button
-      type="button"
-      :disabled="noInput"
-      id="signUp"
-      @click="createAccount()"
-    >
-      Sign Up
+    <br /><br /><br />
+    <button type="button" id="signUp" @click="showNewAccountScreen()">
+      Create an Account
     </button>
+    <br /><br />
+    <button>Forgot Password</button>
     <div>{{ message }}</div>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 import { FirebaseAuth, UserCredential } from "@firebase/auth-types";
 
 @Component
@@ -45,9 +43,15 @@ export default class AppLogin extends Vue {
   private message = "";
   private userEmail = "";
   private userPassword = "";
+
   get noInput(): boolean {
     return this.userEmail.length === 0 || this.userPassword.length === 0;
   }
+
+  showNewAccountScreen(): void {
+    console.log("made it");
+  }
+
   createAccount(): void {
     this.$appAuth
       .createUserWithEmailAndPassword(this.userEmail, this.userPassword)
@@ -83,5 +87,4 @@ export default class AppLogin extends Vue {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-</style>
+<style scoped></style>
