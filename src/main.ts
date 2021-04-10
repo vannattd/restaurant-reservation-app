@@ -3,6 +3,7 @@ import App from './App.vue'
 import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/auth"
+import { AppRouter } from "./app-routing"
 
 Vue.config.productionTip = false
 
@@ -20,5 +21,6 @@ Vue.prototype.$appAuth = firebase.auth();
 Vue.prototype.$appDB = firebase.firestore();
 
 new Vue({
-  render: h => h(App),
+  router: AppRouter,
+  render: h => h(App)
 }).$mount('#app')

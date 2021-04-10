@@ -23,11 +23,11 @@
       Sign In
     </button>
     <br /><br /><br />
-    <button type="button" id="signUp" @click="showNewAccountScreen()">
+    <button type="button" id="createAccount" @click="showNewAccountScreen()">
       Create an Account
     </button>
     <br /><br />
-    <button>Forgot Password</button>
+    <button @click="showForgotPasswordScreen()">Forgot Password</button>
     <div>{{ message }}</div>
   </div>
 </template>
@@ -49,19 +49,11 @@ export default class AppLogin extends Vue {
   }
 
   showNewAccountScreen(): void {
-    console.log("made it");
+    this.$router.push({ path: "/createAccount" });
   }
 
-  createAccount(): void {
-    this.$appAuth
-      .createUserWithEmailAndPassword(this.userEmail, this.userPassword)
-      .then((u: UserCredential) => {
-        this.showMessage(`User create UID ${u.user?.uid}`);
-      })
-      .catch((err: any) => {
-        this.showMessage(`Unable to create account ${err}`);
-      });
-    //this.$router.push({ path: "/category" });
+  showForgotPasswordScreen(): void {
+    this.$router.push({ path: "/forgotPassword" });
   }
 
   authenticate(): void {
@@ -69,11 +61,12 @@ export default class AppLogin extends Vue {
       .signInWithEmailAndPassword(this.userEmail, this.userPassword)
       .then((u: UserCredential) => {
         this.showMessage(`Login successful UID ${u.user?.uid}`);
+        // Go to landing/dashboard screen
+        this.$router.push({ path: "/dashboard" });
       })
       .catch((err: any) => {
         this.showMessage(`Unable to login ${err}`);
       });
-    //this.$router.push({ path: "/expenses" });
   }
 
   showMessage(m: string): void {

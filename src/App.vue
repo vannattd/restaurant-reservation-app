@@ -4,8 +4,7 @@
 
     <h1>Restaurant Reservation Web App</h1>
     <h3>Dylan Vannatter and Johnathon Frocillo</h3>
-    <AppLogin></AppLogin>
-    <CreateAccount></CreateAccount>
+    <router-view></router-view>
   </div>
 </template>
 
