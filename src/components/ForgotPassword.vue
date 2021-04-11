@@ -10,13 +10,14 @@
 </template>
 
 <script lang="ts">
-import firebase from "firebase";
 import { Component, Vue } from "vue-property-decorator";
+import { FirebaseAuth } from "@firebase/auth-types";
 
 @Component
 export default class ForgotPassword extends Vue {
   private message = "";
   private email = "";
+  readonly $appAuth!: FirebaseAuth;
 
   get noInput(): boolean {
     return this.email.length === 0;
@@ -41,8 +42,8 @@ export default class ForgotPassword extends Vue {
 
   resetPasswordClick() {
     // call firebase thing to reset password. Plenty of docs from firebase website
-    var auth = firebase.auth();
-    auth
+
+    this.$appAuth
       .sendPasswordResetEmail(this.email)
       .then(() => {
         this.showMessageAndDismiss(

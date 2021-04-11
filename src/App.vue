@@ -22,7 +22,7 @@ import CreateAccount from "./components/CreateAccount.vue";
 export default class App extends Vue {}
 </script>
 
-<style>
+<style scoped>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -30,5 +30,10 @@ export default class App extends Vue {}
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+h1,
+h3 {
+  color: blue;
 }
 </style>
