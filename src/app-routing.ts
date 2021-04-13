@@ -4,6 +4,7 @@ import AppLogin from "./components/AppLogin.vue";
 import CreateAccount from "./components/CreateAccount.vue";
 import ForgotPassword from "./components/ForgotPassword.vue";
 import Dashboard from "./components/Dashboard.vue";
+import NewReservation from "./components/NewReservation.vue";
 Vue.use(VueRouter);
 
 const myRoutes: Array<RouteConfig> = [
@@ -26,6 +27,11 @@ const myRoutes: Array<RouteConfig> = [
         name: "Dashboard",
         path: "/dashboard",
         component: Dashboard
+    },
+    {
+        name: "NewReservation",
+        path: "/newReservation",
+        component: NewReservation
     }
 ];
 
