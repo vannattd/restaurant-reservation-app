@@ -19,13 +19,19 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(z, pos) in allReservations" :key="pos">
+        <tr
+          v-for="(z, pos) in allReservations"
+          :key="pos"
+          @mouseover="hover = true"
+          @mouseleave="hover = false"
+        >
           <td>{{ z.name }}</td>
           <td>{{ z.firstName }}</td>
           <td>{{ z.lastName }}</td>
           <td>{{ z.location }}</td>
           <td>{{ z.partySize }}</td>
           <td>{{ z.date }}</td>
+          <button v-if="hover">Edit</button>
         </tr>
       </tbody>
     </table>
@@ -35,7 +41,11 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { FirebaseAuth, UserCredential } from "@firebase/auth-types";
-import { FirebaseFirestore, QueryDocumentSnapshot, QuerySnapshot } from "@firebase/firestore-types";
+import {
+  FirebaseFirestore,
+  QueryDocumentSnapshot,
+  QuerySnapshot,
+} from "@firebase/firestore-types";
 
 @Component
 export default class Dashboard extends Vue {
@@ -43,9 +53,9 @@ export default class Dashboard extends Vue {
   readonly $appDB!: FirebaseFirestore;
   private firstName = "";
   private lastName = "";
+  private hover = false;
   private uid = "none";
   private allReservations: any[] = [];
-
 
   userLoggedIn(): boolean {
     return this.$appAuth.currentUser?.uid !== undefined;
@@ -94,7 +104,9 @@ export default class Dashboard extends Vue {
             });
           }
         });
-  })
+      });
+  }
+}
 </script>
 
 <style scoped>
@@ -115,4 +127,11 @@ th {
 td {
   padding: 2em;
 }
+
+/* .hide {
+  visibility: hidden;
+}
+.row:hover + .hide {
+  visibility: visible;
+} */
 </style>
