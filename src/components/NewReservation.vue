@@ -156,6 +156,12 @@ export default class NewReservation extends Vue {
       partySize: this.partySize,
       date: this.date,
     });
+
+    this.$appDB.collection(`allReservations`).add({
+      restaurantName: this.restaurantName,
+      partySize: this.partySize,
+      date: this.date,
+    });
   }
 }
 </script>

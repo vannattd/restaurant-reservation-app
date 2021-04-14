@@ -20,7 +20,7 @@
       </thead>
       <tbody>
         <tr
-          v-for="(z, pos) in allReservations"
+          v-for="(z, pos) in myReservations"
           :key="pos"
           @mouseover="hover = true"
           @mouseleave="hover = false"
@@ -35,6 +35,21 @@
           <td>
             <button v-if="hover" @click="deleteClicked(z.id)">Delete</button>
           </td>
+        </tr>
+      </tbody>
+    </table>
+    <h2>All Reservations Today</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Restaurant Name</th>
+          <th>Party Size</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(z, pos) in todayReservations" :key="pos">
+          <td>{{ z.name }}</td>
+          <td>{{ z.partySize }}</td>
         </tr>
       </tbody>
     </table>
@@ -58,7 +73,9 @@ export default class Dashboard extends Vue {
   private lastName = "";
   private hover = false;
   private uid = "none";
+  private myReservations: any[] = [];
   private allReservations: any[] = [];
+  private todayReservations: any[] = [];
 
   userLoggedIn(): boolean {
     return this.$appAuth.currentUser?.uid !== undefined;
@@ -109,11 +126,11 @@ export default class Dashboard extends Vue {
       .collection(`users/${this.uid}/reservations`)
       .orderBy("date") // Sort by date
       .onSnapshot((qs: QuerySnapshot) => {
-        this.allReservations.splice(0); // remove old data
+        this.myReservations.splice(0); // remove old data
         qs.forEach((qds: QueryDocumentSnapshot) => {
           if (qds.exists) {
             const resData = qds.data();
-            this.allReservations.push({
+            this.myReservations.push({
               name: resData.restaurantName,
               firstName: resData.firstName,
               lastName: resData.lastName,
@@ -125,6 +142,37 @@ export default class Dashboard extends Vue {
           }
         });
       });
+
+    this.$appDB
+      .collection(`allReservations`)
+      .orderBy("partySize") // Sort by size
+      .onSnapshot((qs: QuerySnapshot) => {
+        this.allReservations.splice(0); // remove old data
+        qs.forEach((qds: QueryDocumentSnapshot) => {
+          if (qds.exists) {
+            const resData = qds.data();
+            this.allReservations.push({
+              name: resData.restaurantName,
+              partySize: resData.partySize,
+              date: resData.date,
+              id: qds.id,
+            });
+          }
+        });
+        this.allReservations.forEach((reservation) => {
+          var today = new Date();
+          var resDate = new Date(reservation.date);
+          console.log(today.toISOString());
+          console.log(resDate.getMonth());
+
+          if (
+            resDate.getMonth() == today.getMonth() &&
+            resDate.getDay() == today.getDay()
+          ) {
+            this.todayReservations.push(reservation);
+          }
+        });
+      });
   }
 }
 </script>
@@ -132,7 +180,7 @@ export default class Dashboard extends Vue {
 <style scoped>
 #newReservation {
   font-size: 1em;
-  background-color: aqua;
+  /* //background-color: aqua; */
 }
 
 table {
@@ -146,12 +194,6 @@ th {
 
 td {
   padding: 2em;
+  color: #414042;
 }
-
-/* .hide {
-  visibility: hidden;
-}
-.row:hover + .hide {
-  visibility: visible;
-} */
 </style>
