@@ -63,8 +63,8 @@ export default class NewReservation extends Vue {
   private selectedRestaurantIndex = -1;
   private partySize = 0;
   private date = "";
-  private availableRestaurants = [];
-  private availableAddresses = [];
+  private availableRestaurants: string[] = [];
+  private availableAddresses: string[] = [];
   private restaurantName = "";
   private zip = "";
   private restaurantLocation = "";
@@ -122,9 +122,13 @@ export default class NewReservation extends Vue {
       })
       .then((r: AxiosResponse) => r.data)
       .then((restList: any) => {
-        for (const restaurant of Object.values(restList.data)) {
-          this.availableRestaurants.push(restaurant.restaurant_name);
-          this.availableAddresses.push(restaurant.address.formatted);
+        for (const restaurant of Object.keys(restList.data)) {
+          this.availableRestaurants.push(
+            restList.data[restaurant].restaurant_name
+          );
+          this.availableAddresses.push(
+            restList.data[restaurant].address.formatted
+          );
         }
         console.log(this.availableRestaurants);
         console.log(this.availableAddresses);
