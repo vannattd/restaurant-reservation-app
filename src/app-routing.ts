@@ -5,6 +5,7 @@ import CreateAccount from "./components/CreateAccount.vue";
 import ForgotPassword from "./components/ForgotPassword.vue";
 import Dashboard from "./components/Dashboard.vue";
 import NewReservation from "./components/NewReservation.vue";
+import EditReservation from "./components/EditReservation.vue";
 Vue.use(VueRouter);
 
 const myRoutes: Array<RouteConfig> = [
@@ -32,6 +33,12 @@ const myRoutes: Array<RouteConfig> = [
         name: "NewReservation",
         path: "/newReservation",
         component: NewReservation
+    },
+    {
+        name: "EditReservation",
+        props: true,
+        path: "/editReservation/:id",
+        component: EditReservation
     }
 ];
 

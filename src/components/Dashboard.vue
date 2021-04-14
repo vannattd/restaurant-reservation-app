@@ -31,7 +31,7 @@
           <td>{{ z.location }}</td>
           <td>{{ z.partySize }}</td>
           <td>{{ z.date }}</td>
-          <button v-if="hover">Edit</button>
+          <button v-if="hover" @click="editClicked(z.id)">Edit</button>
         </tr>
       </tbody>
     </table>
@@ -64,6 +64,10 @@ export default class Dashboard extends Vue {
   logout(): void {
     this.$appAuth.signOut();
     this.$router.back();
+  }
+
+  editClicked(id: string): void {
+    this.$router.push({ path: `/editReservation/${id}` });
   }
 
   newReservation(): void {
@@ -101,6 +105,7 @@ export default class Dashboard extends Vue {
               location: resData.location,
               partySize: resData.partySize,
               date: resData.date,
+              id: qds.id,
             });
           }
         });
