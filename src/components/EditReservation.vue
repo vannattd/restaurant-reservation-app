@@ -52,6 +52,22 @@ export default class EditReservation extends Vue {
 
   saveReservation(): void {
     console.log("Saved!");
+    this.$appDB
+      .collection("users")
+      .doc(`${this.$appAuth.currentUser?.uid}`)
+      .collection("reservations")
+      .doc(this.id)
+      .set({
+        date: this.date,
+        firstName: this.firstName,
+        lastName: this.lastName,
+        location: this.location,
+        partySize: this.partySize,
+        restaurantName: this.restaurantName,
+      })
+      .then(() => {
+        this.$router.back();
+      });
   }
 
   mounted(): void {
