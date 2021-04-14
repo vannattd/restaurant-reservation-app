@@ -6,7 +6,7 @@
     <button id="newReservation" @click="newReservation()">
       New Reservation</button
     ><br /><br />
-    <h2>Past Reservations</h2>
+    <h2>My Reservations</h2>
     <table>
       <thead>
         <tr>
@@ -31,7 +31,10 @@
           <td>{{ z.location }}</td>
           <td>{{ z.partySize }}</td>
           <td>{{ z.date }}</td>
-          <button v-if="hover" @click="editClicked(z.id)">Edit</button>
+          <td><button v-if="hover" @click="editClicked(z.id)">Edit</button></td>
+          <td>
+            <button v-if="hover" @click="deleteClicked(z.id)">Delete</button>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -68,6 +71,18 @@ export default class Dashboard extends Vue {
 
   editClicked(id: string): void {
     this.$router.push({ path: `/editReservation/${id}` });
+  }
+
+  deleteClicked(id: string): void {
+    this.$appDB
+      .collection("users")
+      .doc(`${this.$appAuth.currentUser?.uid}`)
+      .collection("reservations")
+      .doc(id)
+      .delete()
+      .then(() => {
+        alert("Reservation Deleted.");
+      });
   }
 
   newReservation(): void {
