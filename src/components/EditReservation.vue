@@ -66,6 +66,31 @@ export default class EditReservation extends Vue {
         restaurantName: this.restaurantName,
       })
       .then(() => {
+        // Save it to 'allReservations' as well, to update the table
+        let docToUpdateID: string;
+        this.$appDB
+          .collection("allReservations")
+          .where("reservationID", "==", this.id)
+          .limit(1)
+          .get()
+          .then((docRef) => {
+            docRef.forEach((doc) => {
+              docToUpdateID = doc.id;
+            });
+          })
+          .then(() => {
+            this.$appDB
+              .collection("allReservations")
+              .doc(docToUpdateID)
+              .set({
+                restaurantName: this.restaurantName,
+                partySize: this.partySize,
+                date: this.date,
+                reservationID: this.id,
+              });
+          });
+      })
+      .then(() => {
         this.$router.back();
       });
   }

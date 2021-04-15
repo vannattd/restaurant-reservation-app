@@ -148,6 +148,8 @@ export default class Dashboard extends Vue {
       .orderBy("partySize") // Sort by size
       .onSnapshot((qs: QuerySnapshot) => {
         this.allReservations.splice(0); // remove old data
+        this.todayReservations.splice(0);
+        console.log(this.allReservations);
         qs.forEach((qds: QueryDocumentSnapshot) => {
           if (qds.exists) {
             const resData = qds.data();
@@ -155,7 +157,7 @@ export default class Dashboard extends Vue {
               name: resData.restaurantName,
               partySize: resData.partySize,
               date: resData.date,
-              id: qds.id,
+              id: resData.reservationID,
             });
           }
         });

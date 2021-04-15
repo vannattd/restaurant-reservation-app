@@ -144,24 +144,30 @@ export default class NewReservation extends Vue {
   }
 
   createReservation(): void {
+    let reservationID = "";
+
     if (this.sameName) {
       this.firstName = this.accFirstName;
       this.lastName = this.accLastName;
     }
-    this.$appDB.collection(`users/${this.uid}/reservations`).add({
-      restaurantName: this.restaurantName,
-      firstName: this.firstName,
-      lastName: this.lastName,
-      location: this.restaurantLocation,
-      partySize: this.partySize,
-      date: this.date,
-    });
-
-    this.$appDB.collection(`allReservations`).add({
-      restaurantName: this.restaurantName,
-      partySize: this.partySize,
-      date: this.date,
-    });
+    this.$appDB
+      .collection(`users/${this.uid}/reservations`)
+      .add({
+        restaurantName: this.restaurantName,
+        firstName: this.firstName,
+        lastName: this.lastName,
+        location: this.restaurantLocation,
+        partySize: this.partySize,
+        date: this.date,
+      })
+      .then((docRef) => {
+        this.$appDB.collection(`allReservations`).add({
+          restaurantName: this.restaurantName,
+          partySize: this.partySize,
+          date: this.date,
+          reservationID: docRef.id,
+        });
+      });
   }
 }
 </script>
