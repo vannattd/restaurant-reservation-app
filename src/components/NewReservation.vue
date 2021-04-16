@@ -46,7 +46,6 @@
     </template>
     <br /><br />
     <button :disabled="noInput" @click="createReservation()">Create</button>
-    <button @click="done()">Done</button>
   </div>
 </template>
 
@@ -101,10 +100,6 @@ export default class NewReservation extends Vue {
           }
         }
       });
-  }
-
-  done(): void {
-    this.$router.back();
   }
 
   @Watch("zip")
@@ -165,6 +160,9 @@ export default class NewReservation extends Vue {
           date: this.date,
           reservationID: docRef.id,
         });
+      })
+      .then(() => {
+        this.$router.back();
       });
   }
 }
