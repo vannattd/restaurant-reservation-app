@@ -22,6 +22,11 @@
       Enter a zip code
       <input type="text" v-model.lazy="zip" />
     </p>
+    <label for="party-select">How many people? </label>
+    <input type="number" v-model.number="partySize" id="party-select" />
+    <br /><br />
+    <label for="date-select">Date and time for the reservation </label>
+    <input type="datetime-local" v-model="date" id="date-select" /><br /><br />
     <template v-if="availableRestaurants.length > 0">
       <label for="restaurant-select">Choose a restaurant </label>
       <select
@@ -39,11 +44,6 @@
         </option></select
       ><br /><br />
     </template>
-    <label for="party-select">How many people? </label>
-    <input type="number" v-model.number="partySize" id="party-select" />
-    <br /><br />
-    <label for="date-select">Date and time for the reservation </label>
-    <input type="datetime-local" v-model="date" id="date-select" />
     <br /><br />
     <button :disabled="noInput" @click="createReservation()">Create</button>
     <button @click="done()">Done</button>
@@ -144,8 +144,6 @@ export default class NewReservation extends Vue {
   }
 
   createReservation(): void {
-    let reservationID = "";
-
     if (this.sameName) {
       this.firstName = this.accFirstName;
       this.lastName = this.accLastName;
