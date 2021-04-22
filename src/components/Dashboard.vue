@@ -91,12 +91,31 @@ export default class Dashboard extends Vue {
   }
 
   deleteClicked(id: string): void {
+    let docToDelete: string;
     this.$appDB
       .collection("users")
       .doc(`${this.$appAuth.currentUser?.uid}`)
       .collection("reservations")
       .doc(id)
       .delete()
+      .then(() => {
+        this.$appDB
+          .collection("allReservations")
+          .where("reservationID", "==", id)
+          .limit(1)
+          .get()
+          .then((docRef) => {
+            docRef.forEach((doc) => {
+              docToDelete = doc.id;
+            });
+          })
+          .then(() => {
+            this.$appDB
+              .collection("allReservations")
+              .doc(docToDelete)
+              .delete();
+          });
+      })
       .then(() => {
         alert("Reservation Deleted.");
       });
@@ -124,7 +143,7 @@ export default class Dashboard extends Vue {
 
     this.$appDB
       .collection(`users/${this.uid}/reservations`)
-      .orderBy("date") // Sort by date
+      .orderBy("date", "desc") // Sort by date
       .onSnapshot((qs: QuerySnapshot) => {
         this.myReservations.splice(0); // remove old data
         qs.forEach((qds: QueryDocumentSnapshot) => {
@@ -164,12 +183,12 @@ export default class Dashboard extends Vue {
         this.allReservations.forEach((reservation) => {
           var today = new Date();
           var resDate = new Date(reservation.date);
-          console.log(today.toISOString());
-          console.log(resDate.getMonth());
+          console.log(today.getMonth(), today.getDate());
+          console.log(resDate.getMonth(), resDate.getDate());
 
           if (
             resDate.getMonth() == today.getMonth() &&
-            resDate.getDay() == today.getDay()
+            resDate.getDate() == today.getDate()
           ) {
             this.todayReservations.push(reservation);
           }

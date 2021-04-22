@@ -41,8 +41,6 @@ export default class ForgotPassword extends Vue {
   }
 
   resetPasswordClick() {
-    // call firebase thing to reset password. Plenty of docs from firebase website
-
     this.$appAuth
       .sendPasswordResetEmail(this.email)
       .then(() => {
