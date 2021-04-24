@@ -28,7 +28,7 @@
           <td>{{ z.name }}</td>
           <td>{{ z.firstName }}</td>
           <td>{{ z.lastName }}</td>
-          <td>{{ z.location }}</td>
+          <td @click="showMap(z.location)">{{ z.location }}</td>
           <td>{{ z.partySize }}</td>
           <td>{{ z.date }}</td>
           <td><button v-if="hover" @click="editClicked(z.id)">Edit</button></td>
@@ -76,6 +76,10 @@ export default class Dashboard extends Vue {
   private myReservations: any[] = [];
   private allReservations: any[] = [];
   private todayReservations: any[] = [];
+
+  showMap(location: string) {
+    window.open(`http://google.com/search?q=${location}`);
+  }
 
   userLoggedIn(): boolean {
     return this.$appAuth.currentUser?.uid !== undefined;
